@@ -1,0 +1,10 @@
+.intro-box{
+    background-color: rgb(249, 245, 245);
+    width: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}

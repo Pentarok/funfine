@@ -1,0 +1,89 @@
+.center-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
+
+.login-form-container{
+    border: 1px solid white;
+    border-radius: 5px;
+    max-width: 460px;
+    width: 100%;
+  
+    display: flex;
+    flex-direction: column;
+    
+    padding: 15px;
+}
+.login-form-container input,textarea{
+    width: 90%;
+    padding: 7px;
+    border: 1px solid aqua;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    background-color: black;
+    color: white;
+    
+}
+
+.login-form-container input:focus{
+    outline: none;
+    border: 2px solid green;
+}
+.password-input{
+    position: relative;
+}
+.login-icon{
+    position: absolute;
+    right: 60px;
+    bottom: 15px;
+    background-color: black;
+    width: 25px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.btn-wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.btn-wrapper button{
+    margin-top: 5px;
+    width: 200px;
+    background-color: hsl(93, 100%, 50%);
+    cursor: pointer;
+    color: black;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    transition: 0.5s ease-in-out;
+}
+.btn-wrapper button:hover{
+    background-color: aqua;
+}
+.alert{
+    padding: 8px;
+    color: white;
+    border-radius: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.error{
+    background-color: red;
+
+}
+.success{
+    background-color: green;
+}
+.outlet-wrapper{
+min-height: 100vh;
+}

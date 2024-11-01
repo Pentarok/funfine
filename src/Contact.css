@@ -1,0 +1,31 @@
+.contact-form-container input,textarea{
+    width: 100%;
+    background-color: black;
+    border: 1px solid white;
+    color: white;
+     padding: 5px;
+     outline: none;
+border-radius: 5px;
+}
+.contact-form-container textarea{
+    width: 100%;
+    background-color: black;
+    color: white;
+}
+.contact-form-container textarea:focus{
+    border: 2px solid green;
+}
+.contact-form-container{
+    min-height: 300px;
+    width: 450px;
+    padding: 20px;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+.center-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  
+}

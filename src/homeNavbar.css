@@ -1,0 +1,9 @@
+.logo{
+    width: 70px;
+  height: 45px;
+    border-radius: 10px 40px 20px 10px;
+    background-color: hsl(239, 81%, 37%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

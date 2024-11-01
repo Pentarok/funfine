@@ -1,0 +1,188 @@
+/* Main Container Styling */
+.container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-image:linear-gradient(-100deg,rgb(103, 14, 138),rgb(13, 40, 42));
+}
+body{
+  background-image:linear-gradient(-100deg,rgb(103, 14, 138),rgb(13, 40, 42));
+}
+.body-container{
+  padding: 10px;
+
+}
+.larger-container {
+  
+  max-width: 100%;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid rgb(247, 247, 244);
+    background-image:linear-gradient(-100deg,rgb(103, 14, 138),rgb(13, 40, 42));
+
+}
+.larger-news-container {
+    
+  max-width: 100%;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid rgb(247, 247, 244);
+background-color:rgb(0, 0, 0);
+
+}
+/* Wrapper for the Image and Content */
+.image-content-wrapper {
+  padding: 10px;
+  
+  display: flex;
+ 
+  gap: 0.5rem;
+  margin-bottom: 15px;
+  border-radius: 5px;
+ 
+  flex-wrap: wrap; /* Ensure content and image are side by side */
+}
+
+.image {
+  flex-basis: 40%; /* Image takes 50% of the width */
+  flex-shrink: 2;
+ 
+}
+
+.image img {
+  max-height: 300px;
+  max-width: 360px;
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 5px;
+  flex-shrink: 1;
+
+}
+
+/* Content Container Styling */
+.content-container {
+  flex-basis: 80%; 
+  color: white !important;
+ 
+ 
+}
+
+.content-wrapper {
+
+  padding: 15px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+/* Styling for the content (including the p tag) */
+.content {
+  padding: 10px;
+  
+  background-color: #ecf0f1; /* Lighter background for content */
+  color: black;
+  border-radius: 5px;
+  flex-grow: 4;
+  overflow-wrap: break-word; /* Ensure long text wraps */
+  max-width: 100%;
+}
+
+.content p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: black;
+}
+
+/* Author and Date Information */
+.author {
+  margin-top: 10px;
+  color: #bdc3c7; /* Subtle text color */
+}
+
+.date-info {
+  color: hsl(0, 9%, 7%);
+}
+
+/* Edit and Delete Button Styling */
+.edit-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 5px;
+}
+
+.btn {
+  padding: 8px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.btn-success {
+  background-color: #27ae60;
+  border: none;
+  color: white;
+}
+.btn-danger {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+}
+.toggle-event-status{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.card-container{
+  width: 100%;
+  display: flex;
+  flex-basis: 33%;
+  background-color: rgb(255, 255, 255);
+  gap: 1rem;
+  padding: 10px;
+  border-radius: 5px;
+  flex-wrap: wrap;
+}
+.sort-wrapper{
+  margin-bottom: 5px;
+}
+.sort-wrapper select{
+  width: 180px;
+  outline: none;
+  border-radius: 5px;
+
+
+}
+.toggle-event-status button{
+  padding: 5px;
+  border: none;
+  background-color: yellow;
+  color:black;
+  border-radius: 5px;
+  font-weight: bold;
+}
+/* Mobile Responsiveness */
+@media only screen and (max-width: 768px) {
+  .image-content-wrapper {
+    flex-wrap: wrap;
+  }
+ 
+  .image, .content-container {
+    flex-basis: 100%; /* Stack image and content vertically on small screens */
+  }
+
+  .image img {
+    max-height: 200px; /* Smaller image height for mobile */
+  }
+
+  .content p {
+    font-size: 0.9rem; /* Smaller font size for mobile */
+  }
+}
+
+

@@ -1,0 +1,9 @@
+.about-container{
+    background-color: white;
+    border-radius: 5px;
+    padding-left: 40px;
+    padding-right: 40px;
+    width: 100%;
+    min-height: 100vh;
+    padding-bottom: 10px;
+}

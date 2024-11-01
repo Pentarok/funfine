@@ -1,0 +1,117 @@
+ 
+  .mega-holder {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+ }
+ 
+ .mega-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+ }
+ .event-details-container {
+   padding: 20px 10px 10px 220px;
+ ;
+ }
+ 
+  .main{
+    height: 350px;
+    width: 360px;
+    border: 2px solid white;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    max-height: 360px;
+  }
+  .image-wrapper{
+position: relative;
+display: flex;
+
+background-position: center;
+background-attachment: fixed;
+  }
+  .overlay {
+   position: absolute;
+   background-color: aqua;
+
+   top: 0;
+   right: 0;
+   height: 100%;
+   width: 100%;
+   border-radius: 0px 0px 0px 20px;
+   opacity: 1.0;
+ }
+ .overlay::before,
+ .overlay::after{
+    content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+background-color: aqua;
+
+  bottom: -40px;
+  right: 0px;
+ }
+ .overlay::after{
+    border-radius: 0px 20px 0px 0px;
+    background-color: hsl(300, 100%, 99%);
+ }
+ .no-wrap {
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+ }
+ 
+ .image-box{
+    position: relative;
+    padding: 5px;
+   
+ }
+ .image-box img{
+   flex-basis: 100%;
+   object-fit: contain;
+ }
+ .text-wrapper{
+  
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  
+    width: 100%;
+   display: flex;
+ }
+
+ .text-wrapper .button {
+    width: 170px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: hsl(180, 100%, 50%);
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+ }
+ 
+ .text-wrapper .button:hover {
+    background-color: hsl(180, 100%, 40%);
+ }
+ 
+ .button-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+ }
+
+ @media only screen and (max-width: 750px) {
+   /* Your styles go here */
+   .event-details-container{
+      padding: 20px;
+   }
+}

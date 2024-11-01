@@ -1,0 +1,85 @@
+.user-confirm-wrapper{
+    background-color: rgb(0, 0, 0);
+    border-radius: 5px;
+    padding: 5px;
+    width: 370px;
+    max-width: 380px;
+ 
+   display: flex;
+   flex-direction: column;
+   position: relative;
+   right: 300px;
+  margin-bottom: 5px;
+   animation: animate 0.6s linear forwards; /* Apply animation */
+}
+.mega-box{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@keyframes animate{
+    0%{
+      top:-100px;
+      opacity:0.2;
+    }
+    100%{
+        top: 10px;
+        opacity: 1;
+    }
+}
+.action-wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.action-wrapper .cancel-btn{
+background-color: hsl(0, 10%, 94%);
+color: black;
+}
+.action-wrapper button{
+    border: none;
+    border-radius: 5px;
+    width: 100px;
+    color: white;
+    font-weight: 600;
+    padding: 5px;
+    transition: 0.5ms ease-in-out;
+}
+.action-wrapper .cancel-btn:hover{
+    background-color: hsl(0, 10%, 80%);
+}
+.action-wrapper .delete-btn{
+    background-color: hsl(0, 100%, 50%);
+}
+.action-wrapper .delete-btn:hover{
+    background-color: hsl(0, 100%, 40%) ;
+}
+.confirm-wrapper p{
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+}
+.warning-text{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    
+}
+.close-icon{
+    position: absolute;
+    right: 0px;
+    font-weight: bold;
+    top: 0px;
+    cursor: pointer;
+    width: 30px;
+    height: 20px;
+    background-color: hwb(0 3% 5%);
+    color: white;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.close-icon:hover{
+ background-color:  hsl(0, 0%, 10%)
+}

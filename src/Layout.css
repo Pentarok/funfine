@@ -1,0 +1,29 @@
+
+ /* Only the content (inside HomeLayout or UserLayout) transitions */
+.outlet-wrapper {
+    transition: opacity 0.3s ease-in-out, transform 0.63s ease-in-out;
+    background-image: linear-gradient(purple, rgb(6, 6, 159));
+  }
+  
+  .outlet-wrapper.transitioning {
+    opacity: 0.1;
+  /*  transform: scale(0.95);*/
+  }
+  
+  .outlet-wrapper:not(.transitioning) {
+    opacity: 1;
+  /*  transform: scale(1);*/
+  }
+  .offline-alert{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    color: rgb(9, 9, 9);
+    background-color: white;
+    max-width: 450px;
+    width: 400px;
+    height: 200px;
+    border-radius: 5px;
+  }
