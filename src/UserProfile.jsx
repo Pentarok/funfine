@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const UserProfile = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [username, setUserName] = useState('');
+    const [username, setUserName] = useState(''); // Initialize username state
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(true); // Loading state
     const { user } = useAuth();
@@ -20,11 +20,15 @@ const UserProfile = () => {
         }
     }, [user]);
 
+    // Fetch user data including username
     const fetchUserData = async () => {
         try {
             const res = await axios.get(`${serverUri}/userprofile/${userId}`);
-            console.log(res);
-            setUserName(res.data); // Assuming res.data has the username directly
+            console.log('Fetched user data:', res.data); // Debug log
+            // Check if the response structure is correct
+            if (res.data && res.data.username) {
+                setUserName(res.data.username); // Set the username state
+            }
         } catch (error) {
             console.log(error);
             setUserName(''); // Clear username on error
@@ -35,22 +39,23 @@ const UserProfile = () => {
 
     useEffect(() => {
         if (userId) {
-            fetchUserData();
+            fetchUserData(); // Fetch user data when userId changes
         }
     }, [userId]);
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
-    
+
         console.log('Selected file before submission:', file); // Debug log
-    
+        console.log('Username before submission:', username); // Debug log
+
         const formData = new FormData();
-        formData.append('username', username);
+        formData.append('username', username); // Include username in form data
         if (file) {
-            formData.append('file', file);
+            formData.append('file', file); // Include file if it exists
         }
-        formData.append('userId', userId);
-    
+        formData.append('userId', userId); // Include userId
+
         try {
             const response = await axios.put(`${serverUri}/profile/${userId}`, formData, {
                 headers: {
@@ -62,7 +67,6 @@ const UserProfile = () => {
             console.error('Error updating profile:', error);
         }
     };
-    
 
     if (loading) {
         return <div className='text-white text-center'>Loading...Please wait</div>; // Show loading state while fetching
@@ -74,7 +78,12 @@ const UserProfile = () => {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="">Username:</label>
-                        <input type="text" value={username} onChange={(e) => setUserName(e.target.value)} required />
+                        <input
+                            type="text"
+                            value={username} // Controlled input
+                            onChange={(e) => setUserName(e.target.value)} // Update state on change
+                            required
+                        />
                     </div>
                     <div>
                         <label htmlFor="">Profile Photo:</label>
