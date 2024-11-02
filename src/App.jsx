@@ -68,7 +68,7 @@ function App() {
 export default App  */
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import HomeLayout from './HomeLayout';
+import HomeLayout from './homeLayout';
 import UserLayout from './userLayout';
 import Homepage from './Homepage';
 import About from './About';
