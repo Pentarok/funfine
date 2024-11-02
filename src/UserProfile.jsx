@@ -41,14 +41,16 @@ const UserProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
-
+    
+        console.log('Selected file before submission:', file); // Debug log
+    
         const formData = new FormData();
         formData.append('username', username);
         if (file) {
             formData.append('file', file);
         }
         formData.append('userId', userId);
-
+    
         try {
             const response = await axios.put(`${serverUri}/profile/${userId}`, formData, {
                 headers: {
@@ -56,12 +58,11 @@ const UserProfile = () => {
                 },
             });
             console.log('Profile updated successfully:', response.data);
-            // Optionally, you can re-fetch user data here to get the latest data
-            // fetchUserData();
         } catch (error) {
             console.error('Error updating profile:', error);
         }
     };
+    
 
     if (loading) {
         return <div className='text-white text-center'>Loading...Please wait</div>; // Show loading state while fetching
