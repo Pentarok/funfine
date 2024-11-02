@@ -110,6 +110,7 @@ import UserManual from './UserManual';
 import DatabaseError from './DatabaseError';
 import NotFoundPage from './NotFoundPage';
 import { useDatabaseCheck } from './DatabaseCheck';
+import UserProfile from './UserProfile';
 
 function App() {
  
@@ -168,6 +169,7 @@ function AnimatedRoutes() {
         <Route path='/user/upcoming-events' element={<UpcomingEvents />} />
        
         <Route path='/user/edit/:id' element={<EditPost />} />
+        <Route path='/user/profile' element={<UserProfile />} />
         
         <Route path='/user/edit/past-events/:id' element={<UpdatePastEvent />} />
         <Route path='/user/allposts' element={<AllPosts/>} />
