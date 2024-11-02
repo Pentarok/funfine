@@ -99,7 +99,7 @@ import RenderEvents from './RenderEvents';
 
 import ForgotPassword from './ForgotPassword';
 import ResetPassword from './ResetPassword'
-import PastEvents from './PastEvents';
+import PastEvents from './UserPastEvents';
 import UpcomingEvents from './UpcomingEvents';
 import UpdatePastEvent from './UpdatePastEvent';
 import RenderUpdatedPastEvents from './RenderUpdatedPastEvents';

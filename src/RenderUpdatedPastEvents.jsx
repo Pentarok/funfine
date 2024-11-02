@@ -66,7 +66,7 @@ const RenderUpdatedPastEvents = () => {
     const source = axios.CancelToken.source();
     const timer = setTimeout(() => {
       source.cancel('Request timed out');
-    }, 2000);
+    }, 12000);
 
     try {
       const res = await axios.get(`${serverUri}/posts/updated/events`, {

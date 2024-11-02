@@ -169,7 +169,7 @@ const toggleEventView = async(postId)=>{
 
       {sortedPosts.map((post, i) => (
         <div className="larger-container" key={post._id || i}>
-          {post.pastRender === false && (
+          {post.postRender === false && (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'yellow' }}>
               <p>This event has passed. Ensure it is updated before enabling public view (e.g., by narrating the happenings and adding a cover photo).</p>
           

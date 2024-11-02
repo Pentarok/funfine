@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import PastEvents from './PastEvents'
+import PastEvents from './UserPastEvents'
 import UserBlogs from './userBlogs'
 import useAuth from './Auth';
 
