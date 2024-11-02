@@ -47,7 +47,7 @@ const UserBlogs = () => {
   });
   const toggleEventView = async(postId)=>{
     const res = await axios.post(`${serverUri}/toggleEventsView/${postId}`);
-    console.log(res);
+
     if(res){
       queryClient.invalidateQueries(["AllPosts",userId])
     }
