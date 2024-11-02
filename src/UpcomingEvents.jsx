@@ -13,11 +13,14 @@ const UpcomingEvents = () => {
   const [posts, setPosts] = useState([]);
   const [sortOrder, setSortOrder] = useState('ascending');
   const queryClient = useQueryClient();
-  const socket = useRef(io(serverUri));
+  const socket = useRef(null);
 
   // Socket event listeners
   useEffect(() => {
-    socket.current = io(serverUri);
+    socket.current = io(serverUri, {
+      transports: ['websocket'], // Ensure you're using the websocket transport
+      withCredentials: true, // Include credentials if your server requires it
+    });
 
     socket.current.on('connect', () => {
       console.log('Socket connected');
