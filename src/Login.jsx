@@ -26,26 +26,27 @@ setIsVisible(!isVisible);
     }
     const handleLogin = async (e) => {
       e.preventDefault();
-      setLoading(true); // Show loading state while making the request
+      if (loading) return; // Prevent duplicate clicks
+      setLoading(true);
       setMessage(''); // Clear any previous message
     
       try {
         const res = await axios.post(
           `${serverUri}/signin`,
           { email, password },
-          { withCredentials: true, timeout: 15000 }
+          { withCredentials: true }
         );
     
-        setLoading(false); // Stop loading once we get a response
+        setLoading(false);
         console.log(res);
     
         if (res.data.message === 'Login success') {
-          setMessage('Login successful!'); // Show success message
-          setIsSuccess(true); // Set to success
+          setMessage('Login successful!');
+          setIsSuccess(true);
     
-          // Store token and user data in localStorage
-          localStorage.setItem('token', JSON.stringify(res.data.token)); // Assuming token is sent in the response
-          localStorage.setItem('userId', JSON.stringify(res.data.user._id)); // Assuming user ID is sent in the response
+          // Store token and user data
+          localStorage.setItem('token', res.data.token); // No need to `JSON.stringify` if it's just a string
+          localStorage.setItem('userId', res.data.user._id);
     
           // Navigate based on user role
           if (res.data.user.role === 'admin') {
@@ -54,35 +55,29 @@ setIsVisible(!isVisible);
             navigate('/user/home');
           }
         } else {
-          setMessage(res.data.message); // Show error message
-          setIsSuccess(false); // Set to error
-    
-         clearMessage()
+          setMessage(res.data.message);
+          setIsSuccess(false);
+          clearMessage();
         }
       } catch (error) {
-      
-        setLoading(false); // Stop loading if there's an error
+        setLoading(false);
     
         if (error.response) {
-          // Server responded with a status code outside the range of 2xx
           console.error('Error response:', error.response);
-          setMessage(error.response.data.message); // Show backend error message (e.g., "Invalid credentials" or "Account does not exist")
-          clearMessage();
+          setMessage(error.response.data.message);
         } else if (error.request) {
-          // The request was made but no response was received
           console.error('Error request:', error.request);
           setMessage('No response from the server. Please try again.');
         } else {
-          // Something else happened
           console.error('Error:', error.message);
           setMessage('An error occurred. Please try again.');
-           clearMessage()
         }
     
-        setIsSuccess(false); // Set to error
-        clearMessage()
+        setIsSuccess(false);
+        clearMessage();
       }
     };
+    
     
   return (
     <div className='center-form'>
