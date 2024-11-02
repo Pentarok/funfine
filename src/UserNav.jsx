@@ -10,7 +10,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify'; // Ensure toast is imported
 import useAuth from './Auth';
 
 const pages = [
@@ -49,52 +49,49 @@ function ResponsiveAppBar() {
   const handleOpenUsefulLinksMenu = (event) => setAnchorElUsefulLinks(event.currentTarget);
   const handleCloseUsefulLinksMenu = () => setAnchorElUsefulLinks(null);
 
+  // Logout logic...
   const handleLogout = () => {
-    // Logout logic...
-    const handleLogout = () => {
-      fetch(`${serverUri}/admin/logout`, {
-        method: 'POST',
-        credentials: 'include', // This includes cookies for session invalidation
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming you're using JWT for auth
-        },
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data)
-          if (data.message === 'Logout successful') {
-            // Remove token and other relevant data from local storage
-            localStorage.removeItem('token');
-            localStorage.removeItem('userId'); // Adjust as per your stored items
-    
-            // Show toast notification for logout success
-            toast.success('Logout successful! Redirecting...', {
-              position: 'top-right',
-              autoClose: 2000, // Toast message will close after 2 seconds
-            });
-    
-            // Delay redirect by 2 seconds
-            setTimeout(() => {
-              navigate('/login'); // Redirect to login after logout
-            }, 2500); // Slight delay after the toast disappears
-          } else {
-            console.error('Logout failed');
-            toast.error('Logout failed', {
-              position: 'top-right',
-              autoClose: 2000,
-            });
-          }
-        })
-        .catch(error => {
-          console.error('Error during logout:', error);
-          toast.error('Error during logout', {
+    fetch(`${serverUri}/admin/logout`, {
+      method: 'POST',
+      credentials: 'include', // This includes cookies for session invalidation
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming you're using JWT for auth
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        if (data.message === 'Logout successful') {
+          // Remove token and other relevant data from local storage
+          localStorage.removeItem('token');
+          localStorage.removeItem('userId'); // Adjust as per your stored items
+
+          // Show toast notification for logout success
+          toast.success('Logout successful! Redirecting...', {
+            position: 'top-right',
+            autoClose: 2000, // Toast message will close after 2 seconds
+          });
+
+          // Delay redirect by 2 seconds
+          setTimeout(() => {
+            navigate('/login'); // Redirect to login after logout
+          }, 2500); // Slight delay after the toast disappears
+        } else {
+          console.error('Logout failed');
+          toast.error('Logout failed', {
             position: 'top-right',
             autoClose: 2000,
           });
+        }
+      })
+      .catch(error => {
+        console.error('Error during logout:', error);
+        toast.error('Error during logout', {
+          position: 'top-right',
+          autoClose: 2000,
         });
-    };
-    
+      });
   };
 
   if (!session && !loading) {
@@ -116,7 +113,7 @@ function ResponsiveAppBar() {
     <>
       <ToastContainer />
       <AppBar position="static">
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           {/* Toggler for mobile view */}
           <IconButton
             size="large"
