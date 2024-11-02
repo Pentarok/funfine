@@ -51,7 +51,7 @@ function ResponsiveAppBar() {
   const serverUri = import.meta.env.VITE_BACKEND_URL;
   // Logout logic...
   const handleLogout = () => {
-    fetch(`${serverUri}/admin/logout`, {
+    fetch(`${serverUri}/logout`, {
       method: 'POST',
       credentials: 'include', // This includes cookies for session invalidation
       headers: {
