@@ -26,8 +26,8 @@ const UserProfile = () => {
             const res = await axios.get(`${serverUri}/userprofile/${userId}`);
             console.log('Fetched user data:', res.data); // Debug log
             // Check if the response structure is correct
-            if (res.data && res.data.username) {
-                setUserName(res.data.username); // Set the username state
+            if (res.data) {
+                setUserName(res.data); // Set the username state
             }
         } catch (error) {
             console.log(error);
