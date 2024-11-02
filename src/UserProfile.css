@@ -1,0 +1,51 @@
+.profile-container{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    max-width: 450px;
+    margin-top: 30px;
+    padding: 15px;
+    background-color: black;
+    border-radius: 5px;
+    border: 1px solid white;
+    color: white;
+    transition: all 0.9s ease-in-out; /* Smooth transition for all properties */
+    overflow: hidden; /* Keeps the content inside when resizing */
+}
+.profile-container input{
+    width: 100%;
+    padding: 5px;
+    outline: none;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+  margin-bottom: 5px;
+}
+.profile-container button{
+    border: none;
+    border-radius: 5px;
+    width: 170px;
+    padding: 5px;
+    background-color: hsl(180, 100%, 50%);
+    color: black;
+    font-weight: bold;
+}
+.profile-container button:hover{
+    background-color:hsl(180, 100%, 40%) ;
+}
+.profile-container label{
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+.delete-account .btn-drop{
+    min-width: 180px;
+    padding: 5px;
+    background-color: hsl(0, 100%, 50%);
+    color: white;
+    border: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.delete-account .btn-drop:hover{
+    background-color: hsl(0, 100%, 40%) ;
+}
