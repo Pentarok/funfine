@@ -184,52 +184,7 @@ const Posts = () => {
 
 const queryClient = useQueryClient();
   
-  const socket = useRef(io(serverUri)); // Initialize socket connection
-
-  // Socket event listeners
-  useEffect(() => {
-    socket.current = io(serverUri);
-
-    socket.current.on('connect', () => {
-      console.log('Socket connected');
-    });
-
-    socket.current.on('connect_error', (err) => {
-      console.error('Connection Error:', err);
-    });
-
-    return () => {
-      socket.current.disconnect();
-    };
-  }, []);
-
-  // Refetch news on WebSocket events
-  useEffect(() => {
-    const handlePostCreated = () => {
-      queryClient.invalidateQueries(['allPosts']);
-      toast.success('New post created!');
-    };
-
-    const handlePostDeleted = ({ id }) => {
-      queryClient.invalidateQueries(['allPosts']);
-      toast.success(`Post ${id} deleted!`);
-    };
-
-    const handlePostUpdated = () => {
-      queryClient.invalidateQueries(['allPosts']);
-      toast.success('Post updated!');
-    };
-
-    socket.current.on('postCreated', handlePostCreated);
-    socket.current.on('postDeleted', handlePostDeleted);
-    socket.current.on('postUpdated', handlePostUpdated);
-
-    return () => {
-      socket.current.off('postCreated', handlePostCreated);
-      socket.current.off('postDeleted', handlePostDeleted);
-      socket.current.off('postUpdated', handlePostUpdated);
-    };
-  }, [queryClient]);
+  
 
   const fetchPosts = async () => {
     try {
