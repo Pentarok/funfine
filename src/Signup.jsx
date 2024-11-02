@@ -15,6 +15,7 @@ const SignUp = () => {
     const [email,setEmail]=useState('');
     const [password,setPassword]=useState('');
     const [message,setMessage]=useState('');
+    const[loading,setLoading]=useState(false);
     const [username,setUserName]=useState('');
     const serverUri = import.meta.env.VITE_BACKEND_URL;
     const togglePasswordVisibility=()=>{
@@ -30,18 +31,21 @@ const navigate = useNavigate();
     const handleFormSubmit = async (e)=>{
         e.preventDefault();
         try {
+            setLoading(true)
             const res = await axios.post(`${serverUri}/signup`,{username,email,password},{withCredentials:true})
             console.log(res)
             if(res.data=="Ok"){
                 setEmail('');
                 setPassword('');
                 setUserName('');
+                setLoading(false)
                 toast.success("Account registered successfully. Redirecting...");
                 setTimeout(() => {
                     navigate('/login')
                 }, 2000);
             }else{
                 toast.error("An error occured!")
+                setLoading(false);
             }  
         } catch (error) {
             if(error.response){
@@ -49,6 +53,7 @@ const navigate = useNavigate();
                 setMessage((error.response.data.error));
                 clearMessage();
             }
+            setLoading(false);
         }
 
     }
@@ -86,7 +91,7 @@ const navigate = useNavigate();
 
             <div className="btn-wrapper">
                 <div>
-                    <button>Submit</button>
+                    <button disabled={loading}>{loading?"Loading..":"Submit"}</button>
                 </div>
             </div>
 
