@@ -16,7 +16,7 @@ const RenderEvents = () => {
 
   const queryClient = useQueryClient();
 
-  const socket = useRef(io(serverUri)); // Initialize socket connection
+/*   const socket = useRef(io(serverUri)); // Initialize socket connection
 
   // Socket event listeners
   useEffect(() => {
@@ -62,7 +62,7 @@ const RenderEvents = () => {
       socket.current.off('postUpdated', handlePostUpdated);
     };
   }, [queryClient]);
-
+ */
   const fetchPosts = async () => {
     try {
       const res = await axios.get(`${serverUri}/events`);
@@ -75,6 +75,9 @@ const RenderEvents = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['Events'],
     queryFn: fetchPosts,
+    refetchInterval: 5000, // Refetch every 5 seconds
+    refetchIntervalInBackground: true, // Keep refetching in the background
+    staleTime: 10000, // Data is fresh for 10 seconds
   });
 
   useEffect(() => {

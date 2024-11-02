@@ -20,11 +20,11 @@ const PastEvents = ({userId}) => {
   const [openDeleteId, setOpenDeleteId] = useState(null);
   
   const queryClient = useQueryClient();
-  const socket = useRef(null);
+  /* const socket = useRef(null); */
 
   
 
-  // Initialize socket connection once
+  /* // Initialize socket connection once
   useEffect(() => {
     if (!socket.current) {
       socket.current = io(serverUri);
@@ -68,7 +68,7 @@ const PastEvents = ({userId}) => {
       socket.current.off('postDeleted', handlePostDeleted);
       socket.current.off('postUpdated', handlePostUpdated);
     };
-  }, [queryClient]);
+  }, [queryClient]); */
 
   // Fetch posts
   const fetchPosts = async () => {

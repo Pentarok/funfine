@@ -13,7 +13,7 @@ const UpcomingEvents = () => {
   const [posts, setPosts] = useState([]);
   const [sortOrder, setSortOrder] = useState('ascending');
   const queryClient = useQueryClient();
-  const socket = useRef(null);
+/*   const socket = useRef(null);
 
   // Socket event listeners
   useEffect(() => {
@@ -34,8 +34,9 @@ const UpcomingEvents = () => {
       socket.current.disconnect();
     };
   }, [serverUri]);
-
-  // Refetch posts on WebSocket events
+ */
+  /* // Refetch posts on WebSocket events
+  Netlify and vercel do not support web sockets
   useEffect(() => {
     const handlePostCreated = () => {
       queryClient.invalidateQueries(['upcoming']);
@@ -61,7 +62,7 @@ const UpcomingEvents = () => {
       socket.current.off('postDeleted', handlePostDeleted);
       socket.current.off('postUpdated', handlePostUpdated);
     };
-  }, [queryClient]);
+  }, [queryClient]); */
 
   const fetchPosts = async () => {
     try {
@@ -76,6 +77,9 @@ const UpcomingEvents = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['upcoming'],
     queryFn: fetchPosts,
+    refetchInterval: 5000, // Refetch every 5 seconds
+    refetchIntervalInBackground: true, // Keep refetching in the background
+    staleTime: 10000, // Data is fresh for 10 seconds
   });
 
   useEffect(() => {

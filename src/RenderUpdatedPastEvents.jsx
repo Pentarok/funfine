@@ -15,10 +15,11 @@ const RenderUpdatedPastEvents = () => {
   const [sortOrder, setSortOrder] = useState('ascending');
   const [timeoutError, setTimeoutError] = useState(false);
   const queryClient = useQueryClient();
-  const socket = useRef(io(serverUri));
+ /*  const socket = useRef(io(serverUri)); */
 
   const {isOnline}=useNetworkStatus();
-  useEffect(() => {
+  // Netlify and vercel do not support web sockets
+  /* useEffect(() => {
     socket.current = io(serverUri);
 
     socket.current.on('connect', () => {
@@ -60,7 +61,7 @@ const RenderUpdatedPastEvents = () => {
       socket.current.off('postUpdated', handlePostUpdated);
     };
   }, [queryClient]);
-
+ */
   const fetchPosts = async () => {
     const source = axios.CancelToken.source();
     const timer = setTimeout(() => {
@@ -90,6 +91,9 @@ const RenderUpdatedPastEvents = () => {
     queryKey: ['UpdatedPastEvents'],
     queryFn: fetchPosts,
     retry: false,
+    refetchInterval: 5000, // Refetch every 5 seconds
+    refetchIntervalInBackground: true, // Keep refetching in the background
+    staleTime: 10000, // Data is fresh for 10 seconds
   });
 
   useEffect(() => {
