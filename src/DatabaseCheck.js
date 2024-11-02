@@ -18,7 +18,7 @@ export function useDatabaseCheck() {
           setMessage("Database connection successful.");
         } else {
           setIsConnected(false);
-          setMessage(data.error || "Failed to connect to the database.");
+          setMessage("Failed to connect to the database.");
         }
       } catch (error) {
         setIsConnected(false);
