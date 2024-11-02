@@ -48,7 +48,7 @@ function ResponsiveAppBar() {
 
   const handleOpenUsefulLinksMenu = (event) => setAnchorElUsefulLinks(event.currentTarget);
   const handleCloseUsefulLinksMenu = () => setAnchorElUsefulLinks(null);
-
+  const serverUri = import.meta.env.VITE_BACKEND_URL;
   // Logout logic...
   const handleLogout = () => {
     fetch(`${serverUri}/admin/logout`, {
