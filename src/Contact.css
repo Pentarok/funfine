@@ -6,7 +6,11 @@
      padding: 5px;
      outline: none;
 border-radius: 5px;
+margin-bottom: 5px
+;
 }
+
+
 .contact-form-container textarea{
     width: 100%;
     background-color: black;
@@ -16,16 +20,20 @@ border-radius: 5px;
     border: 2px solid green;
 }
 .contact-form-container{
-    min-height: 300px;
-    width: 450px;
-    padding: 20px;
     border: 1px solid white;
     border-radius: 5px;
+    max-width: 460px;
+    width: 100%;
+   
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
 }
 .center-form{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-  
+  flex-direction: column;
 }
