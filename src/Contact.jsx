@@ -40,8 +40,10 @@ const Contact = () => {
                 setLoading(false);
             }
         } catch (error) {
+            console.log(error);
             setAlertMessage('An error occurred! Please try again');
             setLoading(false);
+            
             hideMessage();
         }
     };
