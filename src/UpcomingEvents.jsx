@@ -129,7 +129,7 @@ const UpcomingEvents = () => {
   }
 
   // Display message if no posts are available after loading
-  if (!sortedPosts || sortedPosts.length === 0) {
+  if (!sortedPosts && !isLoading || sortedPosts.length === 0 && !isLoading) {
     return <div className='center-null-posts'> <div className='null-posts'>
       <p className='text-white text-center'>No upcoming events available</p>
     </div>
