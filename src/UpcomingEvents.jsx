@@ -109,8 +109,8 @@ const UpcomingEvents = () => {
     return sortOrder === 'ascending' ? dateA - dateB : dateB - dateA;
   });
 
-  if (error) {
-    return <div><p className='text-white text-center'>An error occurred: {error.message}</p></div>;
+  if (error && !isLoading) {
+    return <div><p className='text-white text-center'>An error occurred</p></div>;
   }
 
   // Display loading state
