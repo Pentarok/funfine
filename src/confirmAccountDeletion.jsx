@@ -9,7 +9,7 @@ const ConfirmDeleteAccount = ({ setIsOpen ,isOpen }) => {
   const navigate = useNavigate();
 
   const deleteAccount = async () => {
-    const token = JSON.parse(localStorage.getItem('token'));
+    const token = localStorage.getItem('token');
     await axios.delete(`${serverUri}/deleteAccount`, {
       headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,

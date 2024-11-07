@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './UserProfile.css';
 import useAuth from './Auth';
+import { toast } from 'react-toastify';
 import ConfirmDeleteAccount from './confirmAccountDeletion';
 import axios from 'axios';
 
@@ -9,6 +10,7 @@ const UserProfile = () => {
     const [username, setUserName] = useState(''); // Initialize username state
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState(true); // Loading state
+    const [buttonLoading,setbuttonLoading]=useState(false);
     const { user } = useAuth();
     const [file, setfile] = useState(null);
     const fileRef = useRef(null);
@@ -45,26 +47,43 @@ const UserProfile = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
+        setbuttonLoading(true)
+        const selectedFile = fileRef.current.files[0];  // Access selected file using fileRef
 
         console.log('Selected file before submission:', file); // Debug log
         console.log('Username before submission:', username); // Debug log
 
-        const formData = new FormData();
-        formData.append('username', username); // Include username in form data
+        const data = new FormData();
+        data.append('username', username); // Include username in form data
         if (file) {
-            formData.append('file', file); // Include file if it exists
+            data.append('file', file); // Include file if it exists
         }
-        formData.append('userId', userId); // Include userId
-
+        data.append('userId', userId); // Include userId
+console.log(data)
         try {
-            const response = await axios.put(`${serverUri}/profile/${userId}`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data', // Required for file upload
-                },
-            });
-            console.log('Profile updated successfully:', response.data);
+
+            const response = await fetch(`${serverUri}/userprofile/${userId}`, {
+                credentials: 'include',
+                method: 'PUT',
+                body: data,
+          
+              });
+           
+         const res = await response.json();
+         setbuttonLoading(false);
+         console.log(res)
+if(res=='success'){
+    toast.success('Profile updated successfully!', { autoClose: 3000 });
+   
+
+}else{
+    toast.error('An error occured. Please try again.', { autoClose: 3000 });
+}
+
         } catch (error) {
             console.error('Error updating profile:', error);
+            toast.error('An error occured!', { autoClose: 3000 });
+            setbuttonLoading(false)
         }
     };
 
@@ -75,7 +94,7 @@ const UserProfile = () => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', gap: '3rem', flexWrap: 'wrap' }}>
             <div className="profile-container">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}  enctype="multipart/form-data">
                     <div>
                         <label htmlFor="">Username:</label>
                         <input
@@ -89,12 +108,13 @@ const UserProfile = () => {
                         <label htmlFor="">Profile Photo:</label>
                         <input
                             type="file"
+                            name='file'
                             ref={fileRef}
                             onChange={(e) => setfile(e.target.files[0])} // Update state with the selected file
                         />
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <button type="submit">Update profile</button>
+                        <button type="submit" disabled={buttonLoading}>{buttonLoading?"Loading...":"Update profile"}</button>
                     </div>
                 </form>
             </div>
