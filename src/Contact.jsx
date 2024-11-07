@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './Contact.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 import bgImage from './assets/funfinebg.webp';
 
 const Contact = () => {
