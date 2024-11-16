@@ -28,7 +28,8 @@ export default function MediaCard({event}) {
     <div className="event-details-container">
        
       <Card sx={{ maxWidth: 500 }}>
-        <CardMedia sx={{ height: 350 }} image={event.file} title="green iguana" />
+      <img src={event.file} alt="" style={{aspectRatio:'1/1',maxWidth:'300px',borderRadius:'5px',marginLeft:'20px',width:'100%'}} />
+     
 
         <CardContent>
           <Typography gutterBottom variant="h5" component="div" className='text-center'>
