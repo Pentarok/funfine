@@ -67,12 +67,15 @@ const fetchProfilePhoto =  async ()=>{
     console.log(res)
     setUserPhotoURL(res.profilePhoto);
   } catch (error) {
-    
+    console.log(error)
   }
 }
 useEffect(()=>{
-  fetchProfilePhoto();
-},[user])
+  if(userId){
+    fetchProfilePhoto();
+  }
+
+},[])
   // Logout logic...
   const handleLogout = () => {
     fetch(`${serverUri}/logout`, {
