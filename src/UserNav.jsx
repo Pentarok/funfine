@@ -93,7 +93,7 @@ function ResponsiveAppBar() {
         });
       });
   };
-
+console.log(user);
   if (!session && !loading) {
     navigate('/login');
   }
@@ -195,7 +195,7 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Avatar" src={userPhotoURL} />
+                <Avatar alt="User Avatar" src={user.profilePhoto} />
               </IconButton>
             </Tooltip>
             <Menu
