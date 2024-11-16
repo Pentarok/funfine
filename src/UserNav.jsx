@@ -223,6 +223,22 @@ function ResponsiveAppBar() {
           </Box>
         </Toolbar>
       </AppBar>
+
+      {/* Useful Links dropdown */}
+      <Menu
+        anchorEl={anchorElUsefulLinks}
+        open={Boolean(anchorElUsefulLinks)}
+        onClose={handleCloseUsefulLinksMenu}
+        sx={{ color: 'black' }}
+      >
+        {usefulLinks.map((link) => (
+          <MenuItem key={link.name} onClick={handleCloseUsefulLinksMenu}>
+            <Link to={link.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+              {link.name}
+            </Link>
+          </MenuItem>
+        ))}
+      </Menu>
     </>
   );
 }
