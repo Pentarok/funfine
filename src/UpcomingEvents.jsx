@@ -1,92 +1,32 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import './posts.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { ThreeDots } from 'react-loader-spinner';
 import MediaCard from './Card';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
-import { useQueryClient, useQuery } from '@tanstack/react-query';
-import { io } from 'socket.io-client';
+import { useQuery } from '@tanstack/react-query';
 
 const UpcomingEvents = () => {
   const serverUri = import.meta.env.VITE_BACKEND_URL;
-  const [posts, setPosts] = useState([]);
   const [sortOrder, setSortOrder] = useState('ascending');
-  const queryClient = useQueryClient();
-/*   const socket = useRef(null);
-
-  // Socket event listeners
-  useEffect(() => {
-    socket.current = io(serverUri, {
-      transports: ['websocket'], // Ensure you're using the websocket transport
-      withCredentials: true, // Include credentials if your server requires it
-    });
-
-    socket.current.on('connect', () => {
-      console.log('Socket connected');
-    });
-
-    socket.current.on('connect_error', (err) => {
-      console.error('Connection Error:', err);
-    });
-
-    return () => {
-      socket.current.disconnect();
-    };
-  }, [serverUri]);
- */
-  /* // Refetch posts on WebSocket events
-  Netlify and vercel do not support web sockets
-  useEffect(() => {
-    const handlePostCreated = () => {
-      queryClient.invalidateQueries(['upcoming']);
-      toast.success('New post created!');
-    };
-
-    const handlePostDeleted = ({ id }) => {
-      queryClient.invalidateQueries(['upcoming']);
-      toast.success(`Post ${id} deleted!`);
-    };
-
-    const handlePostUpdated = () => {
-      queryClient.invalidateQueries(['upcoming']);
-      toast.success('Post updated!');
-    };
-
-    socket.current.on('postCreated', handlePostCreated);
-    socket.current.on('postDeleted', handlePostDeleted);
-    socket.current.on('postUpdated', handlePostUpdated);
-
-    return () => {
-      socket.current.off('postCreated', handlePostCreated);
-      socket.current.off('postDeleted', handlePostDeleted);
-      socket.current.off('postUpdated', handlePostUpdated);
-    };
-  }, [queryClient]); */
 
   const fetchPosts = async () => {
-    try {
-      const res = await axios.get(`${serverUri}/upcoming/events`);
-      console.log(res);
-      return res.data;
-    } catch (error) {
-      console.error('Error fetching posts:', error);
+    const res = await axios.get(`${serverUri}/upcoming/events`);
+    if (!res.data) {
+      throw new Error('No data returned');
     }
+    return res.data;
   };
 
-  const { data, isLoading, error } = useQuery({
+  const { data: posts, isLoading, error, isError } = useQuery({
     queryKey: ['upcoming'],
     queryFn: fetchPosts,
-    refetchInterval: 5000, // Refetch every 5 seconds
-    refetchIntervalInBackground: true, // Keep refetching in the background
-    staleTime: 10000, // Data is fresh for 10 seconds
+    refetchInterval: 5000,
+    refetchIntervalInBackground: true,
+    staleTime: 10000,
+    retry: 2, // Retry failed requests twice
   });
-
-  useEffect(() => {
-    if (data) {
-      setPosts(data);
-    }
-  }, [data]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -103,17 +43,14 @@ const UpcomingEvents = () => {
   };
 
   // Sort posts based on the selected order
-  const sortedPosts = [...posts].sort((a, b) => {
-    const dateA = new Date(a.startDateTime);
-    const dateB = new Date(b.endDateTime);
-    return sortOrder === 'ascending' ? dateA - dateB : dateB - dateA;
-  });
+  const sortedPosts = posts
+    ? [...posts].sort((a, b) => {
+        const dateA = new Date(a.startDateTime);
+        const dateB = new Date(b.endDateTime);
+        return sortOrder === 'ascending' ? dateA - dateB : dateB - dateA;
+      })
+    : [];
 
-  if (error && !isLoading) {
-    return <div><p className='text-white text-center'>An error occurred</p></div>;
-  }
-
-  // Display loading state
   if (isLoading) {
     return (
       <div className='text-center text-white d-flex justify-content-center align-items-center'>
@@ -128,12 +65,18 @@ const UpcomingEvents = () => {
     );
   }
 
-  // Display message if no posts are available after loading
-  if (!sortedPosts && !isLoading || sortedPosts.length === 0 && !isLoading) {
-    return <div className='center-null-posts'> <div className='null-posts'>
-      <p className='text-white text-center'>No upcoming events available</p>
-    </div>
-    </div>
+  if (isError) {
+    return <div><p className='text-white text-center'>An error occurred: {error.message}</p></div>;
+  }
+
+  if (sortedPosts.length === 0) {
+    return (
+      <div className='center-null-posts'>
+        <div className='null-posts'>
+          <p className='text-white text-center'>No upcoming events available</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -156,7 +99,9 @@ const UpcomingEvents = () => {
 
       {/* Cards for displaying events */}
       <div className="card-container">
-        {sortedPosts.map((event, i) => <MediaCard key={i} event={event} formatDate={formatDate} />)}
+        {sortedPosts.map((event, i) => (
+          <MediaCard key={i} event={event} formatDate={formatDate} />
+        ))}
       </div>
 
       <ToastContainer />
