@@ -10,8 +10,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify'; // Ensure toast is imported
 import useAuth from './Auth';
 
 const pages = [
@@ -26,6 +25,7 @@ const settings = [
   { name: 'Profile', path: '/user/profile' },
 ];
 
+// Links for the "Useful Links" dropdown
 const usefulLinks = [
   { name: 'Create New Post', path: '/user/create/post' },
   { name: 'Upcoming Events', path: '/user/upcoming-events' },
@@ -36,53 +36,75 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [anchorElUsefulLinks, setAnchorElUsefulLinks] = useState(null);
+  const [userPhotoURL, setUserPhotoURL] = useState('');
   const navigate = useNavigate();
   const { session, loading, user } = useAuth();
 
   const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget);
   const handleCloseNavMenu = () => setAnchorElNav(null);
-
+  
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
   const handleOpenUsefulLinksMenu = (event) => setAnchorElUsefulLinks(event.currentTarget);
   const handleCloseUsefulLinksMenu = () => setAnchorElUsefulLinks(null);
-
+  const serverUri = import.meta.env.VITE_BACKEND_URL;
+  // Logout logic...
   const handleLogout = () => {
-    const serverUri = import.meta.env.VITE_BACKEND_URL;
     fetch(`${serverUri}/logout`, {
       method: 'POST',
-      credentials: 'include',
+      credentials: 'include', // This includes cookies for session invalidation
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming you're using JWT for auth
       },
     })
-      .then((response) => response.json())
-      .then((data) => {
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
         if (data.message === 'Logout successful') {
+          // Remove token and other relevant data from local storage
           localStorage.removeItem('token');
-          toast.success('Logout successful! Redirecting...');
-          setTimeout(() => navigate('/login'), 2000);
+          localStorage.removeItem('userId'); // Adjust as per your stored items
+
+          // Show toast notification for logout success
+          toast.success('Logout successful! Redirecting...', {
+            position: 'top-right',
+            autoClose: 2000, // Toast message will close after 2 seconds
+          });
+
+          // Delay redirect by 2 seconds
+          setTimeout(() => {
+            navigate('/login'); // Redirect to login after logout
+          }, 2500); // Slight delay after the toast disappears
         } else {
-          toast.error('Logout failed!');
+          console.error('Logout failed');
+          toast.error('Logout failed', {
+            position: 'top-right',
+            autoClose: 2000,
+          });
         }
       })
-      .catch(() => toast.error('Error during logout!'));
+      .catch(error => {
+        console.error('Error during logout:', error);
+        toast.error('Error during logout', {
+          position: 'top-right',
+          autoClose: 2000,
+        });
+      });
   };
-
-  const handleAvatarError = (e) => {
-    e.target.src = '/default-avatar.png'; // Ensure you have a placeholder image in your public folder.
-  };
-
+console.log(user);
   if (!session && !loading) {
     navigate('/login');
   }
 
-  if (!loading && user?.isSuspended) {
+  if (!loading && user.isSuspended) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white', minHeight: '100vh' }}>
-        <h3>Your account has been suspended. Contact support for assistance.</h3>
+        <div>
+          <h3>Oops, it seems your account has been suspended!</h3>
+          <p>Contact support for further clarification.</p>
+        </div>
       </div>
     );
   }
@@ -91,61 +113,121 @@ function ResponsiveAppBar() {
     <>
       <ToastContainer />
       <AppBar position="static">
-        <Toolbar>
-          <IconButton size="large" onClick={handleOpenNavMenu} color="inherit">
+        <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+          {/* Toggler for mobile view */}
+          <IconButton
+            size="large"
+            aria-label="menu"
+            onClick={handleOpenNavMenu}
+            sx={{ display: { xs: 'flex', md: 'none' }, color: 'white' }}
+          >
             <MenuIcon />
           </IconButton>
 
-          <Menu anchorEl={anchorElNav} open={Boolean(anchorElNav)} onClose={handleCloseNavMenu}>
+          <Menu
+            anchorEl={anchorElNav}
+            open={Boolean(anchorElNav)}
+            onClose={handleCloseNavMenu}
+            sx={{ display: { xs: 'block', md: 'none' } }}
+          >
             {pages.map((page) => (
               <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                <Link to={page.path}>{page.name}</Link>
+                <Link to={page.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  {page.name}
+                </Link>
               </MenuItem>
             ))}
+            <MenuItem onClick={handleOpenUsefulLinksMenu}>
+              <Typography variant="body1" sx={{ color: 'inherit' }}>Useful Links</Typography>
+            </MenuItem>
           </Menu>
 
-          <Typography variant="h6" noWrap>
+          {/* Title/Logo for larger screens */}
+          <Typography
+            variant="h6"
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            {/* Your Logo */}
             Logo
           </Typography>
 
-          <Box sx={{ flexGrow: 1 }}>
+          {/* Main Links for larger screens */}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link key={page.name} to={page.path} style={{ color: 'white', padding: '0 10px' }}>
+              <Link key={page.name} to={page.path} style={{ textDecoration: 'none', color: 'white', padding: '0 10px' }}>
                 {page.name}
               </Link>
             ))}
+            <Typography variant="button" sx={{ cursor: 'pointer', color: 'white' }} onClick={handleOpenUsefulLinksMenu}>
+              Useful Links
+            </Typography>
           </Box>
 
-          <Box>
+          {/* Useful Links Dropdown */}
+          <Box sx={{ flexGrow: 0 }}>
+            <Menu
+              anchorEl={anchorElUsefulLinks}
+              open={Boolean(anchorElUsefulLinks)}
+              onClose={handleCloseUsefulLinksMenu}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+              {usefulLinks.map((link) => (
+                <MenuItem key={link.name} onClick={handleCloseUsefulLinksMenu}>
+                  <Link to={link.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {link.name}
+                  </Link>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+
+          {/* User Settings (Avatar and Logout) */}
+          <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu}>
-                <Avatar
-                  alt="User Avatar"
-                  src={user?.profilePhoto || '/default-avatar.png'}
-                  onError={handleAvatarError}
-                />
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar alt="User Avatar" src={user && user.profilePhoto ? user.profilePhoto : ''} />
+
               </IconButton>
             </Tooltip>
             <Menu
+              id="menu-appbar"
               anchorEl={anchorElUser}
+              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+              keepMounted
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) =>
-                setting.name === 'Logout' ? (
+              {settings.map((setting) => (
+                setting.name === 'Logout' && session ? (
                   <MenuItem key={setting.name} onClick={handleLogout}>
-                    {setting.name}
+                    <Typography textAlign="center">{setting.name}</Typography>
                   </MenuItem>
                 ) : (
-                  <MenuItem key={setting.name}>
-                    <Link to={setting.path}>{setting.name}</Link>
-                  </MenuItem>
+                  setting.name !== 'Logout' && (
+                    <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                      <Link to={setting.path} style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <Typography textAlign="center">{setting.name}</Typography>
+                      </Link>
+                    </MenuItem>
+                  )
                 )
-              )}
+              ))}
             </Menu>
           </Box>
         </Toolbar>
       </AppBar>
+      <ToastContainer />
     </>
   );
 }
