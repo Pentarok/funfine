@@ -195,7 +195,7 @@ console.log(user);
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Avatar" src={user.profilePhoto} />
+                <Avatar alt="User Avatar" src={user.profilePhoto!==null?user.profilePhoto:''} />
               </IconButton>
             </Tooltip>
             <Menu
