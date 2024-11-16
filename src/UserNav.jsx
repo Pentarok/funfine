@@ -12,7 +12,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify'; // Ensure toast is imported
 import useAuth from './Auth';
-
+import axios from 'axios';
 const pages = [
   { name: 'Home', path: '/user/home' },
   { name: 'All Posts', path: '/user/allposts' },
