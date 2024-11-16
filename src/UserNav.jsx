@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -39,7 +39,7 @@ function ResponsiveAppBar() {
   const [userPhotoURL, setUserPhotoURL] = useState('');
   const navigate = useNavigate();
   const { session, loading, user } = useAuth();
-
+const [userId,setUserId]=useState(null);
   const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget);
   const handleCloseNavMenu = () => setAnchorElNav(null);
   
@@ -49,6 +49,28 @@ function ResponsiveAppBar() {
   const handleOpenUsefulLinksMenu = (event) => setAnchorElUsefulLinks(event.currentTarget);
   const handleCloseUsefulLinksMenu = () => setAnchorElUsefulLinks(null);
   const serverUri = import.meta.env.VITE_BACKEND_URL;
+
+
+
+
+  useEffect(() => {
+    if (user) {
+        setUserId(user.id);
+    }
+}, [user]);
+
+//fetch profile photo
+const fetchProfilePhoto =  async ()=>{
+  try {
+    const res = await axios.get(`${serverUri}/userprofile/${userId}`);
+    setUserPhotoURL(res.profilePhoto);
+  } catch (error) {
+    
+  }
+}
+useEffect(()=>{
+  fetchProfilePhoto();
+},[user])
   // Logout logic...
   const handleLogout = () => {
     fetch(`${serverUri}/logout`, {
@@ -195,7 +217,7 @@ console.log(user);
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="User Avatar" src={user && user.profilePhoto ? user.profilePhoto : ''} />
+              <Avatar alt="User Avatar" src={userPhotoURL} />
 
               </IconButton>
             </Tooltip>
@@ -233,3 +255,6 @@ console.log(user);
 }
 
 export default ResponsiveAppBar;
+
+
+
