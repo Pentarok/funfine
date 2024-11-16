@@ -29,7 +29,7 @@ const UserProfile = () => {
             console.log('Fetched user data:', res.data); // Debug log
             // Check if the response structure is correct
             if (res.data) {
-                setUserName(res.data); // Set the username state
+                setUserName(res.data.username); // Set the username state
             }
         } catch (error) {
             console.log(error);
