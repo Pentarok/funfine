@@ -74,7 +74,7 @@ console.log(data)
          setbuttonLoading(false);
          console.log(res)
 if(res=='success'){
-    queryClient.invalidateQueries(["photos"]);
+    queryClient.invalidateQueries(["profilePhoto"]);
     toast.success('Profile updated successfully!', { autoClose: 3000 });
  
 
