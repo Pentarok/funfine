@@ -4,6 +4,7 @@ import useAuth from './Auth';
 import { toast } from 'react-toastify';
 import ConfirmDeleteAccount from './confirmAccountDeletion';
 import axios from 'axios';
+import { useQueryClient } from '@tanstack/react-query';
 
 const UserProfile = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +16,7 @@ const UserProfile = () => {
     const [file, setfile] = useState(null);
     const fileRef = useRef(null);
     const serverUri = import.meta.env.VITE_BACKEND_URL;
-
+const queryClient = useQueryClient();
     useEffect(() => {
         if (user) {
             setUserId(user.id);
@@ -73,8 +74,9 @@ console.log(data)
          setbuttonLoading(false);
          console.log(res)
 if(res=='success'){
+    queryClient.invalidateQueries(["photos"]);
     toast.success('Profile updated successfully!', { autoClose: 3000 });
-   
+ 
 
 }else{
     toast.error('An error occured. Please try again.', { autoClose: 3000 });
