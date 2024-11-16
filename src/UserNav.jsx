@@ -65,7 +65,7 @@ const fetchProfilePhoto =  async ()=>{
   try {
     const res = await axios.get(`${serverUri}/userprofile/${userId}`);
     console.log(res)
-    setUserPhotoURL(res.profilePhoto);
+    setUserPhotoURL(res.data.profilePhoto);
   } catch (error) {
     console.log(error)
   }
