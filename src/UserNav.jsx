@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,9 +10,12 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify'; // Ensure toast is imported
+import { ToastContainer, toast } from 'react-toastify';
 import useAuth from './Auth';
 import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
+
+// Page and Settings data
 const pages = [
   { name: 'Home', path: '/user/home' },
   { name: 'All Posts', path: '/user/allposts' },
@@ -36,96 +39,85 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [anchorElUsefulLinks, setAnchorElUsefulLinks] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [userPhotoURL, setUserPhotoURL] = useState('');
   const navigate = useNavigate();
   const { session, loading, user } = useAuth();
-const [userId,setUserId]=useState(null);
+
+  // Server URI
+  const serverUri = import.meta.env.VITE_BACKEND_URL;
+
   const handleOpenNavMenu = (event) => setAnchorElNav(event.currentTarget);
   const handleCloseNavMenu = () => setAnchorElNav(null);
-  
+
   const handleOpenUserMenu = (event) => setAnchorElUser(event.currentTarget);
   const handleCloseUserMenu = () => setAnchorElUser(null);
 
   const handleOpenUsefulLinksMenu = (event) => setAnchorElUsefulLinks(event.currentTarget);
   const handleCloseUsefulLinksMenu = () => setAnchorElUsefulLinks(null);
-  const serverUri = import.meta.env.VITE_BACKEND_URL;
 
-
-
-
+  // Update userId on user state change
   useEffect(() => {
     if (user) {
-        setUserId(user.id);
+      setUserId(user.id);
     }
-    console.log(userPhotoURL);
-}, [user]);
+  }, [user]);
 
-//fetch profile photo
-const fetchProfilePhoto =  async ()=>{
-  try {
-    const res = await axios.get(`${serverUri}/userprofile/${userId}`);
-    console.log(res)
-    setUserPhotoURL(res.data.profilePhoto);
-  } catch (error) {
-    console.log(error)
-  }
-}
-useEffect(() => {
-  if (userId) {
-      fetchProfilePhoto();
-  }
-}, [userId]);
+  // Fetch profile photo with TanStack Query (React Query)
+  const fetchProfilePhoto = async () => {
+    try {
+      const res = await axios.get(`${serverUri}/userprofile/${userId}`);
+      return res.data.profilePhoto;
+    } catch (error) {
+      console.error("Error fetching profile photo:", error);
+      throw new Error("Error fetching profile photo");
+    }
+  };
 
-  // Logout logic...
+  // Using useQuery to fetch the profile photo
+  const { data: profilePhoto, isLoading, isError } = useQuery({
+    queryKey: ['profilePhoto', userId],
+    queryFn: fetchProfilePhoto,
+    enabled: !!userId, // Only run the query when userId is available
+    retry: 2, // Retry failed requests twice
+    onSuccess: (data) => {
+      setUserPhotoURL(data); // Update the state when data is successfully fetched
+    },
+  });
+
+  // Handle logout logic
   const handleLogout = () => {
     fetch(`${serverUri}/logout`, {
       method: 'POST',
-      credentials: 'include', // This includes cookies for session invalidation
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming you're using JWT for auth
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
+      .then((response) => response.json())
+      .then((data) => {
         if (data.message === 'Logout successful') {
-          // Remove token and other relevant data from local storage
           localStorage.removeItem('token');
-          localStorage.removeItem('userId'); // Adjust as per your stored items
-
-          // Show toast notification for logout success
-          toast.success('Logout successful! Redirecting...', {
-            position: 'top-right',
-            autoClose: 2000, // Toast message will close after 2 seconds
-          });
-
-          // Delay redirect by 2 seconds
-          setTimeout(() => {
-            navigate('/login'); // Redirect to login after logout
-          }, 2500); // Slight delay after the toast disappears
+          localStorage.removeItem('userId');
+          toast.success('Logout successful! Redirecting...', { position: 'top-right', autoClose: 2000 });
+          setTimeout(() => navigate('/login'), 2500);
         } else {
-          console.error('Logout failed');
-          toast.error('Logout failed', {
-            position: 'top-right',
-            autoClose: 2000,
-          });
+          toast.error('Logout failed', { position: 'top-right', autoClose: 2000 });
         }
       })
-      .catch(error => {
-        console.error('Error during logout:', error);
-        toast.error('Error during logout', {
-          position: 'top-right',
-          autoClose: 2000,
-        });
+      .catch((error) => {
+        toast.error('Error during logout', { position: 'top-right', autoClose: 2000 });
       });
   };
-console.log(user);
+
+  // Handle redirection if not logged in
   if (!session && !loading) {
     navigate('/login');
   }
 
-  if (!loading && user.isSuspended) {
+  // Handle suspended account
+  if (!loading && user?.isSuspended) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white', minHeight: '100vh' }}>
         <div>
@@ -151,6 +143,7 @@ console.log(user);
             <MenuIcon />
           </IconButton>
 
+          {/* Navigation menu */}
           <Menu
             anchorEl={anchorElNav}
             open={Boolean(anchorElNav)}
@@ -169,7 +162,7 @@ console.log(user);
             </MenuItem>
           </Menu>
 
-          {/* Title/Logo for larger screens */}
+          {/* Logo/Title for larger screens */}
           <Typography
             variant="h6"
             component="a"
@@ -183,11 +176,10 @@ console.log(user);
               textDecoration: 'none',
             }}
           >
-            {/* Your Logo */}
             Logo
           </Typography>
 
-          {/* Main Links for larger screens */}
+          {/* Main links */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Link key={page.name} to={page.path} style={{ textDecoration: 'none', color: 'white', padding: '0 10px' }}>
@@ -199,39 +191,16 @@ console.log(user);
             </Typography>
           </Box>
 
-          {/* Useful Links Dropdown */}
-          <Box sx={{ flexGrow: 0 }}>
-            <Menu
-              anchorEl={anchorElUsefulLinks}
-              open={Boolean(anchorElUsefulLinks)}
-              onClose={handleCloseUsefulLinksMenu}
-              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-              {usefulLinks.map((link) => (
-                <MenuItem key={link.name} onClick={handleCloseUsefulLinksMenu}>
-                  <Link to={link.path} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    {link.name}
-                  </Link>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-
-          {/* User Settings (Avatar and Logout) */}
+          {/* User settings and avatar */}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="User Avatar" src={userPhotoURL} />
-
+                <Avatar alt="User Avatar" src={isLoading ? '/loading-avatar.png' : profilePhoto} />
               </IconButton>
             </Tooltip>
             <Menu
               id="menu-appbar"
               anchorEl={anchorElUser}
-              anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-              keepMounted
-              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
@@ -254,12 +223,8 @@ console.log(user);
           </Box>
         </Toolbar>
       </AppBar>
-      <ToastContainer />
     </>
   );
 }
 
 export default ResponsiveAppBar;
-
-
-
