@@ -28,7 +28,11 @@ export default function MediaCard({event}) {
     <div className="event-details-container">
        
       <Card sx={{ maxWidth: 500 }}>
+
+      <div style={{display:'flex',justifyContent:'center',alignItems:'center',width:'100%'}}>
       <img src={event.file} alt="" style={{aspectRatio:'1/1',maxWidth:'300px',borderRadius:'5px',marginLeft:'20px',width:'100%'}} />
+</div>
+
      
 
         <CardContent>
@@ -55,3 +59,5 @@ export default function MediaCard({event}) {
     </div>
   );
 }
+
+
