@@ -57,12 +57,14 @@ const [userId,setUserId]=useState(null);
     if (user) {
         setUserId(user.id);
     }
+    console.log(userPhotoURL);
 }, [user]);
 
 //fetch profile photo
 const fetchProfilePhoto =  async ()=>{
   try {
     const res = await axios.get(`${serverUri}/userprofile/${userId}`);
+    console.log(res)
     setUserPhotoURL(res.profilePhoto);
   } catch (error) {
     
