@@ -141,6 +141,7 @@ function AnimatedRoutes() {
     <Routes>
       {/* General routes */}
       <Route path='/' element={<HomeLayout isTransitioning={isTransitioning} />}>
+        <Route path='/' element={<Homepage/>}></Route>
         <Route path='/home' element={<Homepage />} />
         <Route path='/about' element={<About />} />
         <Route path='/home/events' element={<UpcomingEvents />} />
