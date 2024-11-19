@@ -16,7 +16,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import useAuth from './Auth';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import './homeNavbar.css'
+import './homeNavbar.css';
 
 // Page and Settings data
 const pages = [
@@ -178,22 +178,7 @@ function ResponsiveAppBar() {
             </MenuItem>
           </Menu>
 
-          {/* Logo/Title for larger screens */}
-          <Typography
-            variant="h6"
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Logo
-          </Typography>
+
 
           {/* Main links */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
