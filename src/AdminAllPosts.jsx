@@ -47,15 +47,34 @@ const UserBlogs = () => {
       toast.error('An error occurred while fetching posts!', { autoClose: 3000 });
     }
   });
-  const toggleEventView = async(postId)=>{
-    setEventEviewLoading(true);
-    const res = await axios.post(`${serverUri}/toggleEventsView/${postId}`);
 
-    if(res){
-      queryClient.invalidateQueries(["AllPosts",userId])
+
+  const toggleEventView = async (postId) => {
+    // Optimistically update the UI
+    const updatedPosts = data.map((post) => 
+      post._id === postId ? { ...post, postRender: !post.postRender } : post
+    );
+    queryClient.setQueryData(["AllPosts", userId], updatedPosts);
+  
+    // Set loading state
+    setEventEviewLoading(true);
+  
+    try {
+      await axios.post(`${serverUri}/toggleEventsView/${postId}`);
+      // Invalidate queries to refetch updated data
+      queryClient.invalidateQueries(["AllPosts", userId]);
+    } catch (error) {
+      console.error('Error toggling event view:', error);
+      // Revert the optimistic update in case of an error
+      queryClient.setQueryData(["AllPosts", userId], data);
+      toast.error('Failed to toggle public view!');
+    } finally {
       setEventEviewLoading(false);
     }
-  }
+  };
+  
+
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
