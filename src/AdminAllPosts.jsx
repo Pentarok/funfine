@@ -50,9 +50,10 @@ const UserBlogs = () => {
   const toggleEventView = async(postId)=>{
     setEventEviewLoading(true);
     const res = await axios.post(`${serverUri}/toggleEventsView/${postId}`);
-   setEventEviewLoading(false);
+
     if(res){
       queryClient.invalidateQueries(["AllPosts",userId])
+      setEventEviewLoading(false);
     }
   }
   const formatDate = (dateString) => {
