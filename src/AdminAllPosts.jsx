@@ -15,8 +15,10 @@ import useAuth from './AdminAuth';
 const UserBlogs = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+
   const [openDeleteId, setOpenDeleteId] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [eventViewLoading,setEventEviewLoading]=useState(false);
   const [sortOrder, setSortOrder] = useState('ascending'); // State for sort order
 
   useEffect(() => {
@@ -46,8 +48,9 @@ const UserBlogs = () => {
     }
   });
   const toggleEventView = async(postId)=>{
+    setEventEviewLoading(true);
     const res = await axios.post(`${serverUri}/toggleEventsView/${postId}`);
-
+   setEventEviewLoading(false);
     if(res){
       queryClient.invalidateQueries(["AllPosts",userId])
     }
@@ -127,7 +130,18 @@ const UserBlogs = () => {
    
           </div>
           <div className='toggle-event-status'>
-  <button onClick={()=>toggleEventView(post._id)} style={{marginTop:'5px'}}>{post.postRender?'Disable Public access':'Enable public view'}</button>
+{eventViewLoading
+? 
+<button onClick={()=>toggleEventView(post._id)} style={{marginTop:'5px'}}>{post.postRender?'Disable Public access':'Enable public view'}</button>
+: <div className='text-center d-flex justify-content-center align-items-center'>
+<ThreeDots
+  height="80"
+  width="80"
+  radius="9"
+  color="white"
+  ariaLabel="three-dots-loading"
+/>
+</div>}  
 </div>
           {openDeleteId === post._id && (
             <ConfirmDelete postId={post._id} setOpenDeleteId={setOpenDeleteId} />
