@@ -3,7 +3,7 @@ import axios from 'axios';
 import './Users.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import UserConfirmDelete from './UserConfirmDelete';
 
 const Users = () => {
@@ -84,6 +84,7 @@ const CancelSuspend = ()=>{
 
   return (
     <div className="users-container">
+      <ToastContainer containerId="Z1"/>
       <table className="table table-hover">
         <thead>
           <tr>
