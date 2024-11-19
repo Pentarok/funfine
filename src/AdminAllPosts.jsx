@@ -127,7 +127,7 @@ const UserBlogs = () => {
    
           </div>
           <div className='toggle-event-status'>
-  <button onClick={()=>toggleEventView(post._id)} style={{marginTop:'5px'}}>{post.pastRender?'Disable Public access':'Enable public view'}</button>
+  <button onClick={()=>toggleEventView(post._id)} style={{marginTop:'5px'}}>{post.postRender?'Disable Public access':'Enable public view'}</button>
 </div>
           {openDeleteId === post._id && (
             <ConfirmDelete postId={post._id} setOpenDeleteId={setOpenDeleteId} />
