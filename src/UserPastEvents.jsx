@@ -180,7 +180,7 @@ const toggleEventView = async(postId)=>{
 
           )}
 <div className='toggle-event-status'>
-  <button onClick={()=>toggleEventView(post._id)}>{post.pastRender?'Disable Public access':'Enable public view'}</button>
+  <button onClick={()=>toggleEventView(post._id)}>{post.postRender?'Disable Public access':'Enable public view'}</button>
 </div>
           <div className="edit-wrapper">
             <Link to={`/user/edit/past-events/${post._id}`} className="btn btn-success">
