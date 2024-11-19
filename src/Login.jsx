@@ -111,7 +111,7 @@ setIsVisible(!isVisible);
 
             <div className="btn-wrapper">
                 <div>
-                    <button disabled={loading1}>{loading1?"loading1...":"Login"}</button>
+                    <button disabled={loading1}>{loading1?"loading...":"Login"}</button>
                 </div>
             </div>
 <div>
