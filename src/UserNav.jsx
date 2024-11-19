@@ -8,12 +8,15 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
+import logo from './assets/logo.webp';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
+
 import { ToastContainer, toast } from 'react-toastify';
 import useAuth from './Auth';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import './homeNavbar.css'
 
 // Page and Settings data
 const pages = [
@@ -134,6 +137,19 @@ function ResponsiveAppBar() {
       <AppBar position="static">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           {/* Toggler for mobile view */}
+
+                              {/* Logo Placeholder */}
+                              <div className="logo">
+
+
+<Box sx={{ mr: 0 }}>
+    <img
+        src={logo} // Replace with your logo path
+        alt="Logo"
+        style={{ height: '40px', width: 'auto' }} // Adjust height and width as needed
+    />
+</Box>
+</div>
           <IconButton
             size="large"
             aria-label="menu"
