@@ -221,6 +221,7 @@ const queryClient = useQueryClient();
     return date.toLocaleString('en-US', options);
   };
 
+
   // Sort posts based on the selected order
   const sortedPosts = [...posts].sort((a, b) => {
     const dateA = new Date(a.createdAt);
@@ -275,7 +276,11 @@ const queryClient = useQueryClient();
             ) : null}
 
             <div className="content">
+
+
               <h5 className='text-success'>{post.title}</h5>
+              <span style={{ fontWeight: 'bold' }}>{post.isPast && post.postRender==true?"Started:":"Starts:"}{formatDate(post.startDateTime)}</span> 
+              <span style={{ fontWeight: 'bold' }}>{post.isPast && post.postRender==true?"Ended:":"Ends:"}{formatDate(post.endDateTime)}</span> 
               <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
               <div className="author">
                 <p className="text-dark">By &nbsp;<i>{post.author}</i></p>
