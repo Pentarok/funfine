@@ -279,8 +279,8 @@ const queryClient = useQueryClient();
 
 
               <h5 className='text-success'>{post.title}</h5>
-              <span style={{ fontWeight: 'bold' }}>{post.isPast && post.postRender==true?"Started:":"Starts:"}{formatDate(post.startDateTime)}</span> 
-              <span style={{ fontWeight: 'bold' }}>{post.isPast && post.postRender==true?"Ended:":"Ends:"}{formatDate(post.endDateTime)}</span> 
+              <p><span style={{ fontWeight: 'bold' }}>{post.isPast && post.postRender==true?"Started:":"Starts:"}</span><span style={{paddingLeft:'2px'}}>{formatDate(post.startDateTime)}</span> </p>
+              <p><span style={{ fontWeight: 'bold' }}>{post.isPast && post.postRender==true?"Ended:":"Ends:"}</span><span style={{paddingLeft:'2px'}}>{formatDate(post.endDateTime)}</span> </p>
               <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
               <div className="author">
                 <p className="text-dark">By &nbsp;<i>{post.author}</i></p>
