@@ -16,6 +16,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import useAuth from './Auth';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
+import PollingSuspensionChecker from './UserPollingAuth';
 import './homeNavbar.css';
 
 // Page and Settings data
@@ -133,6 +134,7 @@ function ResponsiveAppBar() {
 
   return (
     <>
+    <PollingSuspensionChecker pollingInterval={10000} /> 
       <ToastContainer />
       <AppBar position="static">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
