@@ -132,8 +132,7 @@ const UserBlogs = () => {
           <div className='toggle-event-status'>
 {eventViewLoading
 ? 
-<button onClick={()=>toggleEventView(post._id)} style={{marginTop:'5px'}}>{post.postRender?'Disable Public access':'Enable public view'}</button>
-: <div className='text-center d-flex justify-content-center align-items-center'>
+<div className='text-center d-flex justify-content-center align-items-center'>
 <ThreeDots
   height="80"
   width="80"
@@ -141,7 +140,9 @@ const UserBlogs = () => {
   color="white"
   ariaLabel="three-dots-loading"
 />
-</div>}  
+</div>
+
+: <button onClick={()=>toggleEventView(post._id)} style={{marginTop:'5px'}}>{post.postRender?'Disable Public access':'Enable public view'}</button>}  
 </div>
           {openDeleteId === post._id && (
             <ConfirmDelete postId={post._id} setOpenDeleteId={setOpenDeleteId} />
