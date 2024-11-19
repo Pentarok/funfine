@@ -5,16 +5,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-
+import Auth from './Auth';
+import useAuth from './Auth';
 const Login = () => {
     const navigate = useNavigate();
     const [message,setMessage]=useState('');
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('');
-    const [loading,setLoading]=useState(false);
+    const [loading1,setloading1]=useState(false);
     const [isSuccess,setIsSuccess]=useState(false)
     const [isVisible,setIsVisible]=useState(false);
     const serverUri = import.meta.env.VITE_BACKEND_URL;
+
+    const {session, loading}=useAuth();
 
     const togglePasswordVisibility=()=>{
 setIsVisible(!isVisible);
@@ -26,8 +29,8 @@ setIsVisible(!isVisible);
     }
     const handleLogin = async (e) => {
       e.preventDefault();
-      if (loading) return; // Prevent duplicate clicks
-      setLoading(true);
+      if (loading1) return; // Prevent duplicate clicks
+      setloading1(true);
       setMessage(''); // Clear any previous message
     
       try {
@@ -37,7 +40,7 @@ setIsVisible(!isVisible);
           { withCredentials: true }
         );
     
-        setLoading(false);
+        setloading1(false);
         console.log(res);
     
         if (res.data.message === 'Login success') {
@@ -60,7 +63,7 @@ setIsVisible(!isVisible);
           clearMessage();
         }
       } catch (error) {
-        setLoading(false);
+        setloading1(false);
     
         if (error.response) {
           console.error('Error response:', error.response);
@@ -78,7 +81,9 @@ setIsVisible(!isVisible);
       }
     };
     
-    
+    if(session && !loading){
+      navigate('/user/home');
+    }
   return (
     <div className='center-form'>
 <div className="login-form-container">
@@ -106,7 +111,7 @@ setIsVisible(!isVisible);
 
             <div className="btn-wrapper">
                 <div>
-                    <button disabled={loading}>{loading?"Loading...":"Login"}</button>
+                    <button disabled={loading1}>{loading1?"loading1...":"Login"}</button>
                 </div>
             </div>
 <div>
