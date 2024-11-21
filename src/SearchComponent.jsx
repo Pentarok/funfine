@@ -1,11 +1,16 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons"; // Added X icon
 
-const SearchForm = ({ onSearch }) => {
+const SearchForm = ({ onSearch, searchQuery }) => {
   const handleInputChange = (e) => {
     const query = e.target.value;
     if (onSearch) onSearch(query); // Trigger parent-provided search function
+  };
+
+  const handleClearSearch = () => {
+    if (onSearch) onSearch(""); // Clears the search query
   };
 
   return (
@@ -14,9 +19,19 @@ const SearchForm = ({ onSearch }) => {
         type="text"
         placeholder="Search events..."
         onInput={handleInputChange} // Trigger search dynamically
+        value={searchQuery}
         style={styles.input}
         aria-label="Search for events" // Accessibility improvement
       />
+      {searchQuery && (
+        <button
+          type="button"
+          onClick={handleClearSearch}
+          style={styles.clearButton}
+        >
+          <FontAwesomeIcon icon={faTimes} style={styles.icon} />
+        </button>
+      )}
       <button type="button" style={styles.button} disabled>
         <FontAwesomeIcon icon={faSearch} style={styles.icon} />
       </button>
@@ -56,8 +71,32 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
   },
+  clearButton: {
+    backgroundColor: "transparent",
+    border: "none",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   icon: {
     fontSize: "18px",
+  },
+};
+
+// Media query for responsiveness
+const mediaQueries = {
+  "@media (max-width: 600px)": {
+    form: {
+      width: "90%",
+      maxWidth: "300px", // smaller input field on mobile
+    },
+    input: {
+      fontSize: "14px",
+    },
+    button: {
+      fontSize: "14px",
+    },
   },
 };
 
