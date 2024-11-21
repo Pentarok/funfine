@@ -86,20 +86,11 @@ const UpcomingEvents = () => {
     );
   }
 
-  if (sortedPosts.length === 0) {
-    return (
-      <div className="center-null-posts">
-        <div className="null-posts">
-          <p className="text-white text-center">No upcoming events available</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="body-container">
       {/* Search bar */}
-      <SearchForm onSearch={setSearchQuery} />
+      <SearchForm onSearch={setSearchQuery} searchQuery={searchQuery} />
+
       <h1 className="text-center" style={{ color: "white" }}>
         Upcoming Events
       </h1>
@@ -122,9 +113,15 @@ const UpcomingEvents = () => {
 
       {/* Event cards */}
       <div className="card-container">
-        {sortedPosts.map((event, i) => (
-          <MediaCard key={i} event={event} formatDate={formatDate} />
-        ))}
+        {sortedPosts.length === 0 ? (
+          <div className="no-matches-container">
+            <p>No items match your search</p>
+          </div>
+        ) : (
+          sortedPosts.map((event, i) => (
+            <MediaCard key={i} event={event} formatDate={formatDate} />
+          ))
+        )}
       </div>
 
       <ToastContainer />
@@ -133,3 +130,4 @@ const UpcomingEvents = () => {
 };
 
 export default UpcomingEvents;
+
