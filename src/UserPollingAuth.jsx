@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAuth from './useAuth';
+import useAuth from './Auth';
 
 const PollingSuspensionChecker = ({ pollingInterval = 10000 }) => {
   const { user } = useAuth(); // Access the user object
