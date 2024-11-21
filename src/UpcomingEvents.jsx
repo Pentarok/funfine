@@ -1,26 +1,28 @@
-import React, { useState } from 'react';
-import './posts.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { ThreeDots } from 'react-loader-spinner';
-import MediaCard from './Card';
-import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState, useMemo } from "react";
+import "./posts.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { ThreeDots } from "react-loader-spinner";
+import MediaCard from "./Card";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
+import SearchForm from "./SearchComponent";
 
 const UpcomingEvents = () => {
   const serverUri = import.meta.env.VITE_BACKEND_URL;
-  const [sortOrder, setSortOrder] = useState('ascending');
+  const [sortOrder, setSortOrder] = useState("ascending");
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
   const fetchPosts = async () => {
     const res = await axios.get(`${serverUri}/upcoming/events`);
     if (!res.data) {
-      throw new Error('No data returned');
+      throw new Error("No data returned");
     }
     return res.data;
   };
 
   const { data: posts, isLoading, error, isError } = useQuery({
-    queryKey: ['upcoming'],
+    queryKey: ["upcoming"],
     queryFn: fetchPosts,
     refetchInterval: 5000,
     refetchIntervalInBackground: true,
@@ -31,29 +33,38 @@ const UpcomingEvents = () => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
       hour12: true,
     };
-    return date.toLocaleString('en-US', options);
+    return date.toLocaleString("en-US", options);
   };
 
-  // Sort posts based on the selected order
-  const sortedPosts = posts
-    ? [...posts].sort((a, b) => {
-        const dateA = new Date(a.startDateTime);
-        const dateB = new Date(b.endDateTime);
-        return sortOrder === 'ascending' ? dateA - dateB : dateB - dateA;
-      })
-    : [];
+  // Filter posts based on search query
+  const filteredPosts = useMemo(() => {
+    return posts
+      ? posts.filter((post) =>
+          post.title.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : [];
+  }, [posts, searchQuery]);
+
+  // Sort filtered posts based on the sort order
+  const sortedPosts = useMemo(() => {
+    return filteredPosts.sort((a, b) => {
+      const dateA = new Date(a.startDateTime);
+      const dateB = new Date(b.endDateTime);
+      return sortOrder === "ascending" ? dateA - dateB : dateB - dateA;
+    });
+  }, [filteredPosts, sortOrder]);
 
   if (isLoading) {
     return (
-      <div className='text-center text-white d-flex justify-content-center align-items-center'>
+      <div className="text-center text-white d-flex justify-content-center align-items-center">
         <ThreeDots
           height="80"
           width="80"
@@ -66,26 +77,38 @@ const UpcomingEvents = () => {
   }
 
   if (isError) {
-    return <div><p className='text-white text-center'>An error occurred: {error.message}</p></div>;
+    return (
+      <div>
+        <p className="text-white text-center">
+          An error occurred: {error.message}
+        </p>
+      </div>
+    );
   }
 
   if (sortedPosts.length === 0) {
     return (
-      <div className='center-null-posts'>
-        <div className='null-posts'>
-          <p className='text-white text-center'>No upcoming events available</p>
+      <div className="center-null-posts">
+        <div className="null-posts">
+          <p className="text-white text-center">No upcoming events available</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className='body-container'>
-      <h1 className='text-center' style={{ color: 'white' }}>Upcoming Events</h1>
+    <div className="body-container">
+      {/* Search bar */}
+      <SearchForm onSearch={setSearchQuery} />
+      <h1 className="text-center" style={{ color: "white" }}>
+        Upcoming Events
+      </h1>
 
-      {/* Input field for sorting */}
+      {/* Sort dropdown */}
       <div className="sort-wrapper text-center">
-        <label htmlFor="sortOrder" className="text-white">Sort by:</label>
+        <label htmlFor="sortOrder" className="text-white">
+          Sort by:
+        </label>
         <select
           id="sortOrder"
           value={sortOrder}
@@ -97,7 +120,7 @@ const UpcomingEvents = () => {
         </select>
       </div>
 
-      {/* Cards for displaying events */}
+      {/* Event cards */}
       <div className="card-container">
         {sortedPosts.map((event, i) => (
           <MediaCard key={i} event={event} formatDate={formatDate} />
