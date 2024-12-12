@@ -11,7 +11,7 @@ import SearchForm from "./SearchComponent";
 const UpcomingEvents = () => {
   const serverUri = import.meta.env.VITE_BACKEND_URL;
   const [sortOrder, setSortOrder] = useState("ascending");
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchPosts = async () => {
     const res = await axios.get(`${serverUri}/upcoming/events`);
@@ -27,7 +27,7 @@ const UpcomingEvents = () => {
     refetchInterval: 5000,
     refetchIntervalInBackground: true,
     staleTime: 10000,
-    retry: 2, // Retry failed requests twice
+    retry: 2,
   });
 
   const formatDate = (dateString) => {
@@ -44,16 +44,14 @@ const UpcomingEvents = () => {
     return date.toLocaleString("en-US", options);
   };
 
-  // Filter posts based on search query
   const filteredPosts = useMemo(() => {
-    return posts
-      ? posts.filter((post) =>
-          post.title.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      : [];
+    if (!posts) return [];
+    if (!searchQuery.trim()) return posts; // Show all posts if search query is empty
+    return posts.filter((post) =>
+      post.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
   }, [posts, searchQuery]);
 
-  // Sort filtered posts based on the sort order
   const sortedPosts = useMemo(() => {
     return filteredPosts.sort((a, b) => {
       const dateA = new Date(a.startDateTime);
@@ -88,14 +86,12 @@ const UpcomingEvents = () => {
 
   return (
     <div className="body-container">
-      {/* Search bar */}
       <SearchForm onSearch={setSearchQuery} searchQuery={searchQuery} />
 
       <h1 className="text-center" style={{ color: "white" }}>
         Upcoming Events
       </h1>
 
-      {/* Sort dropdown */}
       <div className="sort-wrapper text-center">
         <label htmlFor="sortOrder" className="text-white">
           Sort by:
@@ -111,11 +107,14 @@ const UpcomingEvents = () => {
         </select>
       </div>
 
-      {/* Event cards */}
       <div className="card-container">
         {sortedPosts.length === 0 ? (
           <div className="no-matches-container">
-            <p>No items match your search</p>
+            <p>
+              {searchQuery
+                ? "No items match your search. Try adjusting your search query."
+                : "Start typing in the search bar to find events."}
+            </p>
           </div>
         ) : (
           sortedPosts.map((event, i) => (
@@ -130,4 +129,3 @@ const UpcomingEvents = () => {
 };
 
 export default UpcomingEvents;
-
