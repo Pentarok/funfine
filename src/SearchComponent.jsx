@@ -1,16 +1,15 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { faTimes } from "@fortawesome/free-solid-svg-icons"; // Added X icon
+import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const SearchForm = ({ onSearch, searchQuery }) => {
+const SearchForm = ({ onSearch, searchQuery, onReset }) => {
   const handleInputChange = (e) => {
     const query = e.target.value;
-    if (onSearch) onSearch(query); // Trigger parent-provided search function
+    if (onSearch) onSearch(query);
   };
 
   const handleClearSearch = () => {
-    if (onSearch) onSearch(""); // Clears the search query
+    if (onReset) onReset(); // Trigger the reset handler
   };
 
   return (
@@ -18,10 +17,10 @@ const SearchForm = ({ onSearch, searchQuery }) => {
       <input
         type="text"
         placeholder="Search events..."
-        onInput={handleInputChange} // Trigger search dynamically
+        onInput={handleInputChange}
         value={searchQuery}
         style={styles.input}
-        aria-label="Search for events" // Accessibility improvement
+        aria-label="Search for events"
       />
       {searchQuery && (
         <button
@@ -39,21 +38,20 @@ const SearchForm = ({ onSearch, searchQuery }) => {
   );
 };
 
-// Inline styles
 const styles = {
   form: {
     display: "flex",
     alignItems: "center",
     width: "100%",
     maxWidth: "400px",
-    margin: "0 auto", // Center the form
+    margin: "0 auto",
   },
   input: {
     flex: 1,
     padding: "10px 15px",
     fontSize: "16px",
     border: "1px solid #ccc",
-    borderRadius: "25px 0 0 25px", // Rounded left
+    borderRadius: "25px 0 0 25px",
     outline: "none",
     backgroundColor: "#fff",
     color: "#333",
@@ -63,10 +61,10 @@ const styles = {
     fontSize: "16px",
     border: "none",
     height: "45px",
-    borderRadius: "0 25px 25px 0", // Rounded right
+    borderRadius: "0 25px 25px 0",
     backgroundColor: "#007BFF",
     color: "#fff",
-    cursor: "not-allowed", // Disabled button appearance
+    cursor: "not-allowed",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -81,22 +79,6 @@ const styles = {
   },
   icon: {
     fontSize: "18px",
-  },
-};
-
-// Media query for responsiveness
-const mediaQueries = {
-  "@media (max-width: 600px)": {
-    form: {
-      width: "90%",
-      maxWidth: "300px", // smaller input field on mobile
-    },
-    input: {
-      fontSize: "14px",
-    },
-    button: {
-      fontSize: "14px",
-    },
   },
 };
 
