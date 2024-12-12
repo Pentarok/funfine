@@ -29,7 +29,7 @@ const Contact = () => {
             setLoading(true);
             const serverUri = import.meta.env.VITE_BACKEND_URL;
             const contactEmailEndpoint = import.meta.env.VITE_EMAIL_ENDPOINT;
-            const res = await axios.post(`${contactEmailEndpoint}`, { email, name, message }, { withCredentials: true });
+            const res = await axios.post(`${contactEmailEndpoint/message}`, { email, name, message }, { withCredentials: true });
              console.log(res);
             if (res.data === 'Ok') {
                 setLoading(false);
