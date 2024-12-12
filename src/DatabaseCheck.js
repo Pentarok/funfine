@@ -4,7 +4,8 @@ export function useDatabaseCheck() {
   const [isConnected, setIsConnected] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true); // Add loading state
-  const serverUri = import.META.VITE.BACKEND_URL;
+  const serverUri = import.meta.env.VITE_BACKEND_URL;
+
 
   useEffect(() => {
     async function checkConnection() {
