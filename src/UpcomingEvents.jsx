@@ -46,7 +46,6 @@ const UpcomingEvents = () => {
 
   const filteredPosts = useMemo(() => {
     if (!posts) return [];
-    if (!searchQuery.trim()) return posts; // Show all posts if search query is empty
     return posts.filter((post) =>
       post.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -84,14 +83,24 @@ const UpcomingEvents = () => {
     );
   }
 
+  const handleResetSearch = () => {
+    setSearchQuery(""); // Reset the search query
+  };
+
   return (
     <div className="body-container">
-      <SearchForm onSearch={setSearchQuery} searchQuery={searchQuery} />
+      {/* Search bar */}
+      <SearchForm
+        onSearch={setSearchQuery}
+        searchQuery={searchQuery}
+        onReset={handleResetSearch} // Pass reset handler
+      />
 
       <h1 className="text-center" style={{ color: "white" }}>
         Upcoming Events
       </h1>
 
+      {/* Sort dropdown */}
       <div className="sort-wrapper text-center">
         <label htmlFor="sortOrder" className="text-white">
           Sort by:
@@ -107,14 +116,15 @@ const UpcomingEvents = () => {
         </select>
       </div>
 
+      {/* Event cards */}
       <div className="card-container">
-        {sortedPosts.length === 0 ? (
+        {posts.length === 0 ? (
           <div className="no-matches-container">
-            <p>
-              {searchQuery
-                ? "No items match your search. Try adjusting your search query."
-                : "Start typing in the search bar to find events."}
-            </p>
+            <p>No events found</p>
+          </div>
+        ) : sortedPosts.length === 0 ? (
+          <div className="no-matches-container">
+            <p>No items match your search</p>
           </div>
         ) : (
           sortedPosts.map((event, i) => (
