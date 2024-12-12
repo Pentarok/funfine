@@ -10,7 +10,9 @@ export function useDatabaseCheck() {
     async function checkConnection() {
       setLoading(true); // Set loading to true when starting the check
       try {
+        
         const response = await fetch(`${serverUri}/api/check-db-connection`);
+        console.log(response);
         const data = await response.json();
 
         if (data.connected) {
