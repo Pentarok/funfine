@@ -12,7 +12,7 @@ export function useDatabaseCheck() {
       try {
         
         const response = await fetch(`${serverUri}/api/check-db-connection`);
-        console.log(response);
+
         const data = await response.json();
 
         if (data.connected) {
