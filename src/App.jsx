@@ -133,9 +133,9 @@ function AnimatedRoutes() {
   }, [location]);
  const { isConnected, message, loading}=useDatabaseCheck();
  
- if(!isConnected && !loading){
+/* if(!isConnected && !loading){
   return <DatabaseError/>
- }
+ }*/
   return (
     <ErrorBoundary>
     <Routes>
