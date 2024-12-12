@@ -4,14 +4,14 @@ export function useDatabaseCheck() {
   const [isConnected, setIsConnected] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true); // Add loading state
-  const serverUri = "https://funfine-api-git-main-mak-pentaroks-projects.vercel.app/api/check-db-connection";
+  const serverUri = import.META.VITE.BACKEND_URL;
 
   useEffect(() => {
     async function checkConnection() {
       setLoading(true); // Set loading to true when starting the check
       try {
         
-        const response = await fetch(`${serverUri}`);
+        const response = await fetch(`${serverUri}/api/check-db-connection`);
         console.log(response);
         const data = await response.json();
 
