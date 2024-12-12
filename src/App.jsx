@@ -109,7 +109,7 @@ import NewsForm from './NewsForm';
 import UserManual from './UserManual';
 import DatabaseError from './DatabaseError';
 import NotFoundPage from './NotFoundPage';
-import { useDatabaseCheck } from './DatabaseCheck';
+import  useDatabaseCheck  from './DatabaseCheck';
 import UserProfile from './UserProfile';
 
 function App() {
