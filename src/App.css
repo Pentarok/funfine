@@ -2,3 +2,6 @@
 .color {
   background-color: aqua;
 }
+html, body {
+  overflow-x: hidden;
+}
