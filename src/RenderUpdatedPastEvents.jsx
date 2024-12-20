@@ -66,7 +66,7 @@ const RenderUpdatedPastEvents = () => {
     const source = axios.CancelToken.source();
     const timer = setTimeout(() => {
       source.cancel('Request timed out');
-    }, 12000);
+    }, 15000);
 
     try {
       const res = await axios.get(`${serverUri}/posts/updated/events`, {
@@ -161,7 +161,7 @@ return <div>Error</div>
 
   return (
     <div className="body-container">
-      <h1 className="text-center" style={{ color: 'white' }}>Updated Past events</h1>
+      <h1 className="text-center" style={{ color: 'white' }}> Past events</h1>
 
       <div className="sort-wrapper text-center">
         <label htmlFor="sortOrder" className="text-white">Sort by:</label>
