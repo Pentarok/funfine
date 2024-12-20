@@ -86,7 +86,7 @@ const UpcomingEvents = () => {
   const handleResetSearch = () => {
     setSearchQuery(""); // Reset the search query
   };
-if(posts.length == 0)  {
+if(posts.length === 0)  {
   return (
     <div className="text-center text-white d-flex justify-content-center align-items-center bg-">
             <p>OOps! there are no upcoming events yet</p>
