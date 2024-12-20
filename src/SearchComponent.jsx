@@ -70,9 +70,11 @@ const styles = {
     justifyContent: "center",
   },
   clearButton: {
-    backgroundColor: "transparent",
+    backgroundColor: "white",
     border: "none",
     cursor: "pointer",
+    color:"black",
+    padding:"10px"
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
