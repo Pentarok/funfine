@@ -74,7 +74,7 @@ const styles = {
     border: "none",
     cursor: "pointer",
     color:"black",
-    padding:"10px"
+    padding:"10px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
