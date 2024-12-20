@@ -89,7 +89,7 @@ const UpcomingEvents = () => {
   if (posts.length === 0) {
     return (
       <div className="text-center text-white d-flex justify-content-center align-items-center">
-        <p>Oops! There are no upcoming events yet.</p>
+        <p className="pt-1.5rem">Oops! There are no upcoming events yet.</p>
       </div>
     );
   }
