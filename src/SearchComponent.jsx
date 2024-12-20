@@ -55,6 +55,7 @@ const styles = {
     outline: "none",
     backgroundColor: "#fff",
     color: "#333",
+    height: "45px", // Add consistent height for input
   },
   button: {
     padding: "10px 15px",
@@ -71,13 +72,14 @@ const styles = {
   },
   clearButton: {
     backgroundColor: "white",
-    border: "none",
+    border: "1px solid #ccc",
     cursor: "pointer",
-    color:"black",
-    padding:"10px",
+    color: "black",
+    height: "45px", // Match the input height
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: "0", // Optional for consistent edges
   },
   icon: {
     fontSize: "18px",
@@ -85,3 +87,4 @@ const styles = {
 };
 
 export default SearchForm;
+
