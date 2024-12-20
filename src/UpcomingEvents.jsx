@@ -21,7 +21,7 @@ const UpcomingEvents = () => {
     return res.data;
   };
 
-  const { data: posts, isLoading, error, isError } = useQuery({
+  const { data: posts = [], isLoading, error, isError } = useQuery({
     queryKey: ["upcoming"],
     queryFn: fetchPosts,
     refetchInterval: 5000,
@@ -45,7 +45,6 @@ const UpcomingEvents = () => {
   };
 
   const filteredPosts = useMemo(() => {
-    if (!posts) return [];
     return posts.filter((post) =>
       post.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -86,13 +85,15 @@ const UpcomingEvents = () => {
   const handleResetSearch = () => {
     setSearchQuery(""); // Reset the search query
   };
-if(posts.length === 0)  {
-  return (
-    <div className="text-center text-white d-flex justify-content-center align-items-center bg-">
-            <p>OOps! there are no upcoming events yet</p>
-          </div>
-)
-}
+
+  if (posts.length === 0) {
+    return (
+      <div className="text-center text-white d-flex justify-content-center align-items-center">
+        <p>Oops! There are no upcoming events yet.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="body-container">
       {/* Search bar */}
@@ -124,9 +125,7 @@ if(posts.length === 0)  {
 
       {/* Event cards */}
       <div className="card-container">
-        {posts.length === 0 ? (
-          
-        ) : sortedPosts.length === 0 ? (
+        {sortedPosts.length === 0 ? (
           <div className="no-matches-container text-center d-flex justify-content-center align-items-center">
             <p>No items match your search</p>
           </div>
@@ -143,3 +142,4 @@ if(posts.length === 0)  {
 };
 
 export default UpcomingEvents;
+
