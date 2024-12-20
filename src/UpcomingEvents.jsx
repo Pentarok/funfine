@@ -86,7 +86,13 @@ const UpcomingEvents = () => {
   const handleResetSearch = () => {
     setSearchQuery(""); // Reset the search query
   };
-
+if(posts.length == 0)  {
+  return (
+    <div className="text-center text-white d-flex justify-content-center align-items-center bg-">
+            <p>OOps! there are no upcoming events yet</p>
+          </div>
+)
+}
   return (
     <div className="body-container">
       {/* Search bar */}
@@ -119,11 +125,9 @@ const UpcomingEvents = () => {
       {/* Event cards */}
       <div className="card-container">
         {posts.length === 0 ? (
-          <div className="no-matches-container">
-            <p>No events found</p>
-          </div>
+          
         ) : sortedPosts.length === 0 ? (
-          <div className="no-matches-container">
+          <div className="no-matches-container text-center d-flex justify-content-center align-items-center">
             <p>No items match your search</p>
           </div>
         ) : (
